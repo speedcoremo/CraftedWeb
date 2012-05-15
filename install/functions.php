@@ -386,7 +386,6 @@ $config = '<?php
 	/* Advanced settings, mostly used for further developement.
 	/* DO NOT TOUCH THESE CONFIGS unless you know what you are doing! */
 	/************************/
-	$current_revision = \'1.2\'; //The current database & core revision of the installed CraftedWeb. 
 	
 	$core_pages = array(\'Account Panel\' => \'account.php\',\'Shopping Cart\' => \'cart.php\',
 	\'Change Password\' => \'changepass.php\',\'Donate\' => \'donate.php\',\'Donation Shop\' => \'donateshop.php\',

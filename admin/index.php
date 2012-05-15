@@ -181,14 +181,12 @@
                 MySQL Host: <br/>
                 MySQL User: <br/>
                 MySQL Password: <br/>
-                Core Revision: 
                </td>
                <td>
                <b>
                <?php echo $GLOBALS['connection']['host'];?><br/>
                <?php echo $GLOBALS['connection']['user']; ?><br/>
                <?php echo substr($GLOBALS['connection']['password'],0,4); ?>****<br/>
-               <?php echo $GLOBALS['current_revision']; ?>
                </b>
                </td>
                <td>

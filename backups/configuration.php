@@ -25,7 +25,6 @@
 	 //Example: '123.456.678', '987.654.321'
 	 
 	 $website_title = 'CraftedWeb'; //The title of your website, shown in the users browser.
-	 $shutDownOnMismatch = false; //This decides if your website will terminate when you have a mismatch between the database & the website core.
 	 
 	 $default_email = 'noreply@yourserver.com'; //The default email address from wich Emails will be sent.
 
@@ -253,7 +252,6 @@
 	/* Advanced settings, mostly used for further developement.
 	/* DO NOT TOUCH THESE CONFIGS unless you know what you are doing! */
 	/************************/
-	$current_revision = '1.0'; //The current database & core revision of the installed CraftedWeb. 
 	
 	$core_pages = array('Account Panel' => 'account.php','Shopping Cart' => 'cart.php',
 	'Change Password' => 'changepass.php','Donate' => 'donate.php','Donation Shop' => 'donateshop.php',
