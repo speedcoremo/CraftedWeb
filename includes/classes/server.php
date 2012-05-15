@@ -95,7 +95,7 @@ class server {
 			
 			 echo '
 			       <td>
-			       	   <b>'.convTime($uptime).' '.$string.'</b> uptime
+			       	   <b>'.convTime($uptime).'</b> uptime
 				   </td>
 			       </tr>';
 			}
@@ -110,7 +110,7 @@ class server {
 			 
 		 echo '<tr>
 		 	   <td>
-			   	   Next arena flush: <b>',$flush,'</b>
+			   	   Next arena flush: <b>'.$flush.'</b>
 			   </td>';
 	}
 	echo '</tr>
