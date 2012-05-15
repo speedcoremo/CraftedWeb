@@ -156,10 +156,10 @@ class account {
 		{
 			//errors found.
 			echo "<p><h4>The following errors occured:</h4>";
-			foreach($errors as $error) 
-			{
-				echo  "<strong>*", $error ,"</strong><br/>";
-			}
+				foreach($errors as $error) 
+				{
+					echo  "<strong>*", $error ,"</strong><br/>";
+				}
 			echo "</p>";
 			exit();
 		} 
@@ -171,15 +171,15 @@ class account {
 			
 			$getID = mysql_query("SELECT id FROM account WHERE username='".$username."'");
 			$row = mysql_fetch_assoc($getID);
+			
 			connect::selectDB('webdb');
 			mysql_query("INSERT INTO account_data VALUES('".$row['id']."','','')"); 
 			
-			$result = mysql_query("SELECT id FROM account WHERE username='".$username_clean."'");
-						 
+			$result = mysql_query("SELECT id FROM account WHERE username='".$username_clean."'");	 
 			$id = mysql_fetch_assoc($result); 
 			$id = $id['id'];
 					
-			account::GMLogin($username_clean);
+			self::GMLogin($username_clean);
 			$_SESSION['cw_user']=ucfirst(strtolower($username_clean));
 			$_SESSION['cw_user_id']=$id;
 			
@@ -197,7 +197,6 @@ class account {
 	 if($GLOBALS['forum']['type']=='phpbb' && $GLOBALS['forum']['autoAccountCreate']==TRUE) 
 	 {
 		     ////////PHPBB INTEGRATION//////////////
-			ini_set('display_errors',1);
 			define('IN_PHPBB', true);
 			define('ROOT_PATH', '../..'.$GLOBALS['forum']['forum_path']);
 
@@ -206,27 +205,28 @@ class account {
 			
 			if(file_exists($phpbb_root_path . 'common.' . $phpEx) && file_exists($phpbb_root_path . 'includes/functions_user.' . $phpEx)) 
 			{
-			include($phpbb_root_path . 'common.' . $phpEx);
+			include($phpbb_root_path.'common.'.$phpEx);
 			
-			include($phpbb_root_path . 'includes/functions_user.' . $phpEx);
+			include($phpbb_root_path.'includes/functions_user.'.$phpEx);
 			
 			$arrTime = getdate();
-			$unixTime = strtotime($arrTime['year'] . "-" . $arrTime['mon'] . '-' . $arrTime['mday'] . " " . $arrTime['hours'] . ":" . $arrTime['minutes'] . ":" . $arrTime['seconds']);
+			$unixTime = strtotime($arrTime['year']."-".$arrTime['mon'].'-'.$arrTime['mday']." ".$arrTime['hours'].":".
+								  $arrTime['minutes'].":".$arrTime['seconds']);
 
 			$user_row = array(
-			'username'              => $username,
-			'user_password'         => phpbb_hash($password),
-			'user_email'            => $email,
-			'group_id'              => (int) 2,
-			'user_timezone'         => (float) 0,
-			'user_dst'              => "0",
-			'user_lang'             => "en",
-			'user_type'             => 0,
-			'user_actkey'           => "",
-			'user_ip'               => $_SERVER['REMOTE_HOST'],
-			'user_regdate'          => $unixTime,
-			'user_inactive_reason'  => 0,
-			'user_inactive_time'    => 0
+				'username'              => $username,
+				'user_password'         => phpbb_hash($password),
+				'user_email'            => $email,
+				'group_id'              => (int) 2,
+				'user_timezone'         => (float) 0,
+				'user_dst'              => "0",
+				'user_lang'             => "en",
+				'user_type'             => 0,
+				'user_actkey'           => "",
+				'user_ip'               => $_SERVER['REMOTE_HOST'],
+				'user_regdate'          => $unixTime,
+				'user_inactive_reason'  => 0,
+				'user_inactive_time'    => 0
 			);
 
 			// All the information has been compiled, add the user
@@ -244,7 +244,6 @@ class account {
 		if (isset($_SESSION['cw_user'])) 
 			header("Location: ?p=account");
 	}
-	
 	
 	
 	###############################
@@ -284,8 +283,8 @@ class account {
 				$duration = $duration.' hours';  
 			}
 				echo '<span class="yellow_text">Banned<br/>
-				Reason: '.$row['banreason'].'<br/>
-				Time left: '.$duration.'</span>';
+					  Reason: '.$row['banreason'].'<br/>
+					  Time left: '.$duration.'</span>';
 		} 
 		else 
 			echo '<b class="green_text">Active</b>';
@@ -518,10 +517,10 @@ class account {
 				$thePass = $row['sha_pass_hash'];
 				
 				$pass = mysql_real_escape_string(strtoupper($_POST['cur_pass']));
-				$pass_hash = SHA1($username.':'.$pass);
+				$pass_hash = sha1($username.':'.$pass);
 				
 				$new_pass = mysql_real_escape_string(strtoupper($_POST['new_pass']));
-				$new_pass_hash = SHA1($username.':'.$new_pass);
+				$new_pass_hash = sha1($username.':'.$new_pass);
 				
 				if ($thePass != $pass_hash) 
 					echo '<b class="red_text">The old password is not correct!</b>';
@@ -529,8 +528,8 @@ class account {
 				{
 					//success, change password
 					echo 'Your Password was changed!';
-					mysql_query("UPDATE `account` SET `sha_pass_hash`='$new_pass_hash' WHERE `username`='".$username."'");
-					mysql_query("UPDATE `account` SET `v`='0' AND `s`='0' WHERE username='".$username."'");
+					mysql_query("UPDATE account SET sha_pass_hash='".$new_pass_hash."' WHERE username='".$username."'");
+					mysql_query("UPDATE account SET v='0' AND s='0' WHERE username='".$username."'");
 				}
 			}
 		  }
@@ -541,7 +540,7 @@ class account {
 	{
 			$username = mysql_real_escape_string(strtoupper($account_name));
 			$pass = mysql_real_escape_string(strtoupper($password));
-			$pass_hash = SHA1($username.':'.$pass);
+			$pass_hash = sha1($username.':'.$pass);
 			
 			connect::selectDB('logondb');
 			mysql_query("UPDATE `account` SET `sha_pass_hash`='$pass_hash' WHERE `username`='".$username."'");
@@ -598,8 +597,7 @@ class account {
 			$points = (int)$points;
 			$account_id = self::getAccountID($account_name);
 			connect::selectDB('webdb');
-			$result = mysql_query("SELECT COUNT('id') FROM account_data WHERE vp >= '".$points."' 
-			AND id='".$account_id."'");
+			$result = mysql_query("SELECT COUNT('id') FROM account_data WHERE vp >= '".$points."' AND id='".$account_id."'");
 			
 			if (mysql_result($result,0)==0) 
 				return FALSE;
@@ -612,8 +610,7 @@ class account {
 			$points = (int)$points;
 			$account_id = self::getAccountID($account_name);
 			connect::selectDB('webdb');
-			$result = mysql_query("SELECT COUNT('id') FROM account_data WHERE dp >= '".$points."' 
-			AND id='".$account_id."'");
+			$result = mysql_query("SELECT COUNT('id') FROM account_data WHERE dp >= '".$points."' AND id='".$account_id."'");
 			
 			if (mysql_result($result,0)==0)
 				return FALSE;

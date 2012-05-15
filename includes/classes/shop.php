@@ -56,10 +56,10 @@ class shop {
 			$count = mysql_query("SELECT COUNT(id) FROM shopitems WHERE name LIKE '%".$value."%' 
 								  AND in_shop = '".$shop."' ".$advanced);
 		
-				if(mysql_result($count,0)==0) 
-					$count = 0;
-				 else 
-					$count = mysql_result($count,0);
+			if(mysql_result($count,0)==0) 
+				$count = 0;
+			 else 
+				$count = mysql_result($count,0);
 				
 			
 			if($results!="--Results--") 
@@ -91,7 +91,7 @@ class shop {
 					        $class="white";
 					break;
 					case(0):
-					        $class="gray";
+					       	$class="gray";
 					break;
 					case(2):
 					        $class="green";
@@ -121,10 +121,10 @@ class shop {
 					 //No icon found. Probably cataclysm item. Get the icon from wowhead instead.
 					 $sxml = new SimpleXmlElement(file_get_contents('http://www.wowhead.com/item='.$entry.'&xml'));
 					  
-					  $icon = strtolower(mysql_real_escape_string($sxml->item->icon));
-					  //Now that we have it loaded. Add it into database for future use.
-					  //Note that WoWHead XML is extremely slow. This is the main reason why we're adding it into the db.
-					  mysql_query("INSERT INTO item_icons VALUES('".$row['displayid']."','".$icon."')");
+					 $icon = strtolower(mysql_real_escape_string($sxml->item->icon));
+					 //Now that we have it loaded. Add it into database for future use.
+					 //Note that WoWHead XML is extremely slow. This is the main reason why we're adding it into the db.
+					 mysql_query("INSERT INTO item_icons VALUES('".$row['displayid']."','".$icon."')");
 				 }
 				 else 
 				 {
@@ -148,14 +148,18 @@ class shop {
                                        <?php echo $row['name']; ?></a>
                                </td>
                               <td align="right" width="350">
-								   <?php if($row['faction']==2) {
+								   <?php 
+								   if($row['faction']==2) 
+								   {
                                      echo "<span class='blue_text'>Alliance only </span>";  
                                      if($row['class']!="-1")
-                                     echo "<br/>";
-                                   } elseif($row['faction']==1) {
+                                     	echo "<br/>";
+                                   } 
+								   elseif($row['faction']==1) 
+								   {
                                      echo "<span class='red_text'>Horde only </span>"; 
                                      if($row['class']!="-1")
-                                     echo "<br/>";
+                                     	echo "<br/>";
                                    }
                                        
 								   if($row['class']!="-1") 
@@ -167,30 +171,28 @@ class shop {
 								   {
 									   ?>
 								 <font size="-2">
-								 ( <a
-								 onclick="editShopItem('<?php echo $entry; ?>','<?php echo $shop; ?>','<?php echo $row['price']; ?>')">Edit</a> | 
-								 <a 
-								 onclick="removeShopItem('<?php echo $entry; ?>','<?php echo $shop; ?>')">Remove</a> )
+								 ( <a onclick="editShopItem('<?php echo $entry; ?>','<?php echo $shop; ?>','<?php echo $row['price']; ?>')">Edit</a> | 
+								   <a onclick="removeShopItem('<?php echo $entry; ?>','<?php echo $shop; ?>')">Remove</a> )
 								 </font>
 								 &nbsp; &nbsp; &nbsp; &nbsp;   
 								 <?php
 								  }
 								   
-								   ?>
-								   <font class="shopItemPrice"><?php echo $row["price"]; ?> 
-								   <?php 
-								   if ($shop=="donate") 
-								   	   echo $GLOBALS['donation']['coins_name'];
-								   else 
-									   echo 'Vote Points';   
-								   ?></font>
+								  ?>
+								  <font class="shopItemPrice"><?php echo $row["price"]; ?> 
+								  <?php 
+								  if ($shop=="donate") 
+								   	  echo $GLOBALS['donation']['coins_name'];
+								  else 
+									  echo 'Vote Points';   
+								  ?>
+                                  </font>
 							 
 						   <div style="display:none;" id="status-<?php echo $entry; ?>" class="green_text">
 						   The item was added to your cart
 						   </div>
                            </td>
-                           <td><input type="button" value="Add to cart" 
-                               onclick="addCartItem(<?php echo $entry; ?>,'<?php echo $shop; ?>Cart',
+                           <td><input type="button" value="Add to cart" onclick="addCartItem(<?php echo $entry; ?>,'<?php echo $shop; ?>Cart',
                                '<?php echo $shop; ?>',this)"> 
                                
                            </td> 
@@ -223,10 +225,10 @@ class shop {
 					 //No icon found. Probably cataclysm item. Get the icon from wowhead instead.
 					 $sxml = new SimpleXmlElement(file_get_contents('http://www.wowhead.com/item='.$entry.'&xml'));
 					  
-					  $icon = strtolower(mysql_real_escape_string($sxml->item->icon));
-					  //Now that we have it loaded. Add it into database for future use.
-					  //Note that WoWHead XML is extremely slow. This is the main reason why we're adding it into the db.
-					  mysql_query("INSERT INTO item_icons VALUES('".$row['displayid']."','".$icon."')");
+					 $icon = strtolower(mysql_real_escape_string($sxml->item->icon));
+					 //Now that we have it loaded. Add it into database for future use.
+					 //Note that WoWHead XML is extremely slow. This is the main reason why we're adding it into the db.
+					 mysql_query("INSERT INTO item_icons VALUES('".$row['displayid']."','".$icon."')");
 				 }
 				 else 
 				 {
@@ -245,18 +247,23 @@ class shop {
                                  </div>
                            </td>
                                <td width="380">
-                               <a href="http://<?php echo $GLOBALS['tooltip_href']; ?>item=<?php echo $entry; ?>" 
-                               class="<?php echo $class; ?>_tooltip" target="_blank">
-                               <?php echo $row['name']; ?></a></td>
+                               		<a href="http://<?php echo $GLOBALS['tooltip_href']; ?>item=<?php echo $entry; ?>" 
+									class="<?php echo $class; ?>_tooltip" target="_blank">
+                               			<?php echo $row['name']; ?>
+                                    </a>
+                               </td>
                                <td align="right" width="350">
-                               <?php if($row['faction']==2) {
+                               <?php if($row['faction']==2) 
+							   {
                                  echo "<span class='blue_text'>Alliance only </span>";  
                                  if($row['class']!="-1")
-                                 echo "<br/>";
-                               } elseif($row['faction']==1) {
+                                	 echo "<br/>";
+                               } 
+							   elseif($row['faction']==1) 
+							   {
                                  echo "<span class='red_text'>Horde only </span>"; 
                                  if($row['class']!="-1")
-                                 echo "<br/>";
+                                	 echo "<br/>";
                                }
                                
                                if($row['class']!="-1") {
@@ -267,10 +274,8 @@ class shop {
                                {
                              ?>
                              <font size="-2">
-                             ( <a 
-                             onclick="editShopItem('<?php echo $entry; ?>','<?php echo $shop; ?>','<?php echo $row['price']; ?>')">Edit</a> | 
-                             <a
-                             onclick="removeShopItem('<?php echo $entry; ?>','<?php echo $shop; ?>')">Remove</a> )
+                                 ( <a onclick="editShopItem('<?php echo $entry; ?>','<?php echo $shop; ?>','<?php echo $row['price']; ?>')">Edit</a> | 
+                                 <a onclick="removeShopItem('<?php echo $entry; ?>','<?php echo $shop; ?>')">Remove</a> )
                              </font>
                              &nbsp; &nbsp; &nbsp; &nbsp;   
                              <?php
@@ -278,24 +283,27 @@ class shop {
                                
                                ?>
                                <font class="shopItemPrice"><?php echo $row["price"]; ?> 
-                               <?php if ($shop=="donate") {
-                                 echo $GLOBALS['donation']['coins_name'];
-                               } else {
-                                echo 'Vote Points';   
-                               }?></font>
+                               <?php 
+							   if ($shop=="donate") 
+                               		echo $GLOBALS['donation']['coins_name'];
+							   else 
+                               		echo 'Vote Points';   
+							   ?>
+                               </font>
                          
                        <div style="display:none;" id="status-<?php echo $entry; ?>" class="green_text">
-                       The item was added to your cart
-                       </div></td>
-                               <td><input type="button" value="Add to cart" 
-                               onclick="addCartItem(<?php echo $entry; ?>,'<?php echo $shop; ?>Cart',
-                               '<?php echo $shop; ?>',this)"> 
-                               
-                               </td> 
-                           </tr> 
-                    </table> 
-                </div>
-                <?php
+                       		The item was added to your cart
+                       </div>
+                       </td>
+                       <td>
+                       		<input type="button" value="Add to cart" 
+                       	    onclick="addCartItem(<?php echo $entry; ?>,'<?php echo $shop; ?>Cart',
+                       		'<?php echo $shop; ?>',this)"> 
+                       </td> 
+                   </tr> 
+                </table> 
+            </div>
+            <?php
 			}
 		}
 		

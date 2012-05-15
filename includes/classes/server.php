@@ -25,9 +25,10 @@ class server {
 		   echo $status = '<h4 class="realm_status_title_offline">'.$GLOBALS['realms'][$realm_id]['name'].' -  Offline</h4>';
 		else 
 		{
-		 echo $status = '<h4 class="realm_status_title_online">'.$GLOBALS['realms'][$realm_id]['name'].' - Online</h4>';
+		   echo $status = '<h4 class="realm_status_title_online">'.$GLOBALS['realms'][$realm_id]['name'].' - Online</h4>';
 			 
        echo '<span class="realm_status_text">';
+	   
 	   /* Players online bar */
 	   if($GLOBALS['serverStatus']['factionBar']==TRUE) 
 	   {   

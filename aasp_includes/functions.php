@@ -26,9 +26,9 @@ class server
 	
 	public function getPlayersOnline($rid) 
 	{	
-	   $this->connectToRealmDB($rid);
-	   $result = mysql_query("SELECT COUNT(guid) FROM characters WHERE online='1'");
-	   return round(mysql_result($result,0));
+	    $this->connectToRealmDB($rid);
+	    $result = mysql_query("SELECT COUNT(guid) FROM characters WHERE online='1'");
+	    return round(mysql_result($result,0));
 	}
 	
 	public function getUptime($rid) 
@@ -71,19 +71,16 @@ class server
 		
 		$fp = fsockopen($row['host'], $row['port'], $errno, $errstr, 1);
 		if (!$fp) 
-		{
 		   return '<font color="#990000">Offline</font>';
-		}
 		else 
-		{
 		 	return 'Online';
-		}
 	}
 	
 	public function getGMSOnline() 
 	{
 		$this->selectDB('logondb');
-		$result = mysql_query("SELECT COUNT(id) FROM account WHERE username IN ( select username FROM account WHERE online IN ('1')) AND id IN (SELECT id FROM account_access WHERE gmlevel>'1');");
+		$result = mysql_query("SELECT COUNT(id) FROM account WHERE username IN ( select username FROM account WHERE online IN ('1')) 
+		AND id IN (SELECT id FROM account_access WHERE gmlevel>'1');");
 		
 		return mysql_result($result,0);
 	}
@@ -165,11 +162,10 @@ class server
 				buildError("<b>Database Connection error:</b> A connection could not be established to Realm. Error: ".mysql_error(),NULL);
 			}
 			else
-			{
 				$this->connect();
-			}
+
 			mysql_select_db($row['char_db'])or 
-			buildError("<b>Database Selection error:</b> The realm database could not be selected. Error: ".mysql_error(),NULL);
+				buildError("<b>Database Selection error:</b> The realm database could not be selected. Error: ".mysql_error(),NULL);
 		}
 	}
 	
@@ -202,10 +198,10 @@ class server
 		return $row['name'];
 	}
 	
-	 public function getAddress() 
-	 {
+	public function getAddress() 
+	{
 		return $_SERVER['HTTP_HOST'].$_SERVER['REQUEST_URI'];
-     }
+    }
 	
 	public function logThis($action,$extended = NULL) 
 	{
@@ -273,13 +269,14 @@ class server
 		$row = mysql_fetch_assoc($result);
 		
 		if(empty($row['name']))
-		   return "<i>Unknown</i>";
+		   return '<i>Unknown</i>';
 		else   
 		   return $row['name'];
 	}
 	
 	public function checkForNotifications() 
 	{
+		/* Not used! */
 		$this->selectDB('webdb');
 		
 		//Check for old votelogs
@@ -307,11 +304,7 @@ class server
 			$rid = $row['id'];
 		}
 		else
-		{
 			$rid = $_COOKIE['presetRealmStatus'];
-		}
-		
-		
 		
 		echo 'Selected realm: <b>'.$this->getRealmName($rid).'</b> <a href="#" onclick="changePresetRealmStatus()">(Change Realm)</a><hr/>';
 		 ?>
@@ -377,7 +370,7 @@ class account
 		$row = mysql_fetch_assoc($result);
 		
 		if(empty($row['username']))
-		   return "<i>Unknown</i>";
+		   return '<i>Unknown</i>';
 		else
 		   return ucfirst(strtolower($row['username']));
 	}
@@ -390,7 +383,7 @@ class account
 		
 		$result = mysql_query("SELECT name FROM characters WHERE guid='".(int)$id."'");
 		if(mysql_num_rows($result)==0)
-		   return "<i>Unknown</i>";
+		   return '<i>Unknown</i>';
 		else
 		{   
 		$row = mysql_fetch_assoc($result);
@@ -462,9 +455,11 @@ class account
 	
 	private function downloadFile ($url, $path) 
 	{
+	  /* Not used! */
 	  $newfname = $path;
 	  $file = fopen ($url, "rb");
-	  if ($file) {
+	  if ($file) 
+	  {
 		$newf = fopen ($newfname, "wb");
 	
 		if ($newf)
@@ -477,14 +472,10 @@ class account
 	  }
 	
 	  if ($file) 
-	  {
 		fclose($file);
-	  }
 	
 	  if ($newf) 
-	  {
 		fclose($newf);
-	  }
 	 }
 	 
 }
@@ -587,55 +578,55 @@ class character
 	  switch($value) 
 	  {
 		 default:
-		 return "Unknown";
+			 return "Unknown";
 		 break;
 		 #######
 		 case(1):
-		 return "Human";
+		 	return "Human";
 		 break;
 		 #######		 
 		 case(2):
-		 return "Orc";
+		 	return "Orc";
 		 break;
 		 #######
 		 case(3):
-		 return "Dwarf";
+		 	return "Dwarf";
 		 break;
 		 #######
 		 case(4):
-		 return "Night Elf";
+			 return "Night Elf";
 		 break;
 		 #######
 		 case(5):
-		 return "Undead";
+		 	return "Undead";
 		 break; 
 		 #######
 		 case(6):
-		 return "Tauren";
+		 	return "Tauren";
 		 break;
 		 #######
 		 case(7):
-		 return "Gnome";
+			 return "Gnome";
 		 break;
 		 #######
 		 case(8):
-		 return "Troll";
+		 	return "Troll";
 		 break;
 		 #######
 		 case(9):
-		 return "Goblin";
+			 return "Goblin";
 		 break;
 		 #######
 		 case(10):
-		 return "Blood Elf";
+		 	return "Blood Elf";
 		 break;
 		 #######
 		 case(11):
-		 return "Dranei";
+		 	return "Dranei";
 		 break;
 		 #######
 		 case(22):
-		 return "Worgen";
+		 	return "Worgen";
 		 break;
          #######
 	  }
@@ -645,7 +636,7 @@ class character
   {
 	 if($value==1) 
 		 return "Female";
-	 elseif($value=9)
+	 elseif($value==0)
 		 return "Male";
 	 else 
 		 return "Unknown";
@@ -656,52 +647,52 @@ class character
 	  switch($value) 
 	  {
 		 default:
-		 return "Unknown";
+		 	return "Unknown";
 		 break;
 		 #######
 		 case(1):
-		 return "Warrior";
+			 return "Warrior";
 		 break;
 		 #######
 		 case(2):
-		 return "Paladin";
+		 	return "Paladin";
 		 break;
 		 #######
 		 case(3):
-		 return "Hunter";
+		 	return "Hunter";
 		 break;
 		 #######
 		 case(4):
-		 return "Rogue";
+		 	return "Rogue";
 		 break;
 		 #######
 		 case(5):
-		 return "Priest";
+		 	return "Priest";
 		 break;
 		 #######
 		 case(6):
-		 return "Death Knight";
+		 	return "Death Knight";
 		 break;
 		 #######
 		 case(7):
-		 return "Shaman";
+			 return "Shaman";
 		 break;
 		 #######
 		 case(8):
-		 return "Mage";
+			 return "Mage";
 		 break;
 		 #######
 		 case(9):
-		 return "Warlock";
+		 	return "Warlock";
 		 break;
 		 #######
 		 case(11):
-		 return "Druid";
+			 return "Druid";
 		 break;
 		 ####### 
 		 #######
 		 case(12):
-		 return "Monk";
+		 	return "Monk";
 		 break;
 		 ####### 
 	  }
@@ -721,7 +712,7 @@ function limit_characters ($str,$n)
 	if ( strlen ( $str ) <= $n )
 		return $str;
 	else
-		return substr ( $str, 0, $n ) . '';
+		return substr ($str, 0, $n).'';
 }
 
 function stripBBCode($text_to_search) 

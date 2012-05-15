@@ -22,12 +22,12 @@ class character {
 			if($GLOBALS['service']['unstuck']['currency']=='dp')
 			{
 				if(account::hasDP($_SESSION['cw_user'],$GLOBALS['service']['unstuck']['price'])==FALSE) 
-					die( '<b class="red_text">Not enough '.$GLOBALS['donation']['coins_name'].'</b>' );
+					die('<b class="red_text">Not enough '.$GLOBALS['donation']['coins_name'].'</b>');
 				else
 					account::deductDP(account::getAccountID($_SESSION['cw_user']),$GLOBALS['service']['unstuck']['price']);
 		}
 			
-		$getXYZ = mysql_query("SELECT * FROM `character_homebind` WHERE `guid`='".$guid."'"); 
+		$getXYZ = mysql_query("SELECT * FROM character_homebind WHERE guid='".$guid."'"); 
 		$row = mysql_fetch_assoc($getXYZ);
 		
 		$new_x = $row['posX']; 
@@ -58,7 +58,7 @@ class character {
 			if($GLOBALS['service']['revive']['currency']=='vp')
 			{
 				if(account::hasVP($_SESSION['cw_user'],$GLOBALS['service']['unstuck']['price'])==FALSE) 
-					die( '<b class="red_text">Not enough Vote Points!</b>' );
+					die('<b class="red_text">Not enough Vote Points!</b>');
 				else
 					account::deductVP(account::getAccountID($_SESSION['cw_user']),$GLOBALS['service']['revive']['price']);	
 			}
@@ -71,8 +71,7 @@ class character {
 				account::deductDP(account::getAccountID($_SESSION['cw_user']),$GLOBALS['service']['revive']['price']);	
 		}
 			
-		    mysql_query("DELETE FROM character_aura WHERE guid = '".$guid."' AND spell = '20584'
-						 OR guid = '".$guid."' AND spell = '8326'");
+		    mysql_query("DELETE FROM character_aura WHERE guid = '".$guid."' AND spell = '20584' OR guid = '".$guid."' AND spell = '8326'");
 			
 			account::logThis("Performed a revive on ".character::getCharName($guid,$rid),'Revive',$rid);
 			
@@ -82,9 +81,7 @@ class character {
 	
 	public static function instant80($values) 
 	{
-		die("This feature is disabled. <br/>
-		<i>Also, you shouldn't be here...</i>
-		");
+		die("This feature is disabled. <br/><i>Also, you shouldn't be here...</i>");
 		$values = mysql_real_escape_string($values);
 		$values = explode("*",$values);
 		
@@ -140,55 +137,55 @@ class character {
 	  switch($value) 
 	  {
 		 default:
-		 return "Unknown";
+			 return "Unknown";
 		 break;
 		 #######
 		 case(1):
-		 return "Human";
+		 	return "Human";
 		 break;
 		 #######		 
 		 case(2):
-		 return "Orc";
+		 	return "Orc";
 		 break;
 		 #######
 		 case(3):
-		 return "Dwarf";
+			 return "Dwarf";
 		 break;
 		 #######
 		 case(4):
-		 return "Night Elf";
+		 	return "Night Elf";
 		 break;
 		 #######
 		 case(5):
-		 return "Undead";
+		 	return "Undead";
 		 break; 
 		 #######
 		 case(6):
-		 return "Tauren";
+			 return "Tauren";
 		 break;
 		 #######
 		 case(7):
-		 return "Gnome";
+		 	return "Gnome";
 		 break;
 		 #######
 		 case(8):
-		 return "Troll";
+		 	return "Troll";
 		 break;
 		 #######
 		 case(9):
-		 return "Goblin";
+			 return "Goblin";
 		 break;
 		 #######
 		 case(10):
-		 return "Blood Elf";
+			return "Blood Elf";
 		 break;
 		 #######
 		 case(11):
-		 return "Dranei";
+		 	return "Dranei";
 		 break;
 		 #######
 		 case(22):
-		 return "Worgen";
+			 return "Worgen";
 		 break;
          #######
 	  }
@@ -197,11 +194,11 @@ class character {
   public static function getGender($value) 
   {
 	 if($value==1) 
-		 return "Female";
-	 elseif($value=9)
-		 return "Male";
+		 return 'Female';
+	 elseif($value==0)
+		 return 'Male';
 	 else 
-		 return "Unknown";
+		 return 'Unknown';
   }
   
   public static function getClass($value) 
@@ -209,52 +206,52 @@ class character {
 	  switch($value) 
 	  {
 		 default:
-		 return "Unknown";
+		 	return "Unknown";
 		 break;
 		 #######
 		 case(1):
-		 return "Warrior";
+		 	return "Warrior";
 		 break;
 		 #######
 		 case(2):
-		 return "Paladin";
+		 	return "Paladin";
 		 break;
 		 #######
 		 case(3):
-		 return "Hunter";
+			 return "Hunter";
 		 break;
 		 #######
 		 case(4):
-		 return "Rogue";
+			 return "Rogue";
 		 break;
 		 #######
 		 case(5):
-		 return "Priest";
+			 return "Priest";
 		 break;
 		 #######
 		 case(6):
-		 return "Death Knight";
+		 	return "Death Knight";
 		 break;
 		 #######
 		 case(7):
-		 return "Shaman";
+			 return "Shaman";
 		 break;
 		 #######
 		 case(8):
-		 return "Mage";
+		 	return "Mage";
 		 break;
 		 #######
 		 case(9):
-		 return "Warlock";
+		 	return "Warlock";
 		 break;
 		 #######
 		 case(11):
-		 return "Druid";
+		 	return "Druid";
 		 break;
 		 ####### 
 		 #######
 		 case(12):
-		 return "Monk";
+		 	return "Monk";
 		 break;
 		 ####### 
 	  }

@@ -90,7 +90,7 @@ if($_POST['action']=='checkout')
 	$values = explode('*',$_POST['values']);
 	
 	connect::selectDB('webdb');
-	require("../misc/ra.php");
+	require('../misc/ra.php');
 	
 	if(isset($_SESSION['donateCart'])) 
 	{

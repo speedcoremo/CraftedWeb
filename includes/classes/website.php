@@ -49,7 +49,8 @@ class website {
 						       <tr>
 						           <td>';
 					}
-					   $output .= $newsPT1;  unset($newsPT1);		
+					   $output .= $newsPT1;  
+					   unset($newsPT1);		
 						
 						$text = preg_replace("
 						  #((http|https|ftp)://(\S*?\.\S*?))(\s|\;|\)|\]|\[|\{|\}|,|\"|'|:|\<|$|\.\s)#ie",
@@ -83,7 +84,8 @@ class website {
 						$output .= $newsPT2;  
 						unset($newsPT2);			
 				}
-					echo '<hr/><a href="?p=news">View older news...</a>';
+					echo '<hr/>
+						  <a href="?p=news">View older news...</a>';
 					cache::buildCache('news',$output);
 			} 
 		} 
@@ -97,14 +99,16 @@ class website {
 			cache::loadCache('slideshow');
 	    else 
 	    {
-		connect::selectDB('webdb');
-		$result = mysql_query("SELECT path,link FROM slider_images ORDER BY position ASC");
-		while($row = mysql_fetch_assoc($result)) 
-		{
-			echo $outPutPT = '<a href="'.$row['link'].'"><img border="none" src="'.$row['path'].'" alt="" class="slideshow_image"></a>';
-			$output .= $outPutPT;
-		}
-		cache::buildCache('slideshow',$output);
+			connect::selectDB('webdb');
+			$result = mysql_query("SELECT path,link FROM slider_images ORDER BY position ASC");
+			while($row = mysql_fetch_assoc($result)) 
+			{
+				echo $outPutPT = '<a href="'.$row['link'].'">
+								  <img border="none" src="'.$row['path'].'" alt="" class="slideshow_image">
+								  </a>';
+				$output .= $outPutPT;
+			}
+			cache::buildCache('slideshow',$output);
 	  }
 	}
 	
@@ -115,7 +119,7 @@ class website {
 		$x =  1;
 		while($row = mysql_fetch_assoc($result)) 
 		{
-			echo '<a href="#" rel="',$x,'">',$x,'</a>';
+			echo '<a href="#" rel="'.$x.'">'.$x.'</a>';
 			$x++;
 		}
 		unset($x);
@@ -125,7 +129,7 @@ class website {
 	{        
 		$str = preg_replace("/<img[^>]+\>/i", "(image)", $str); 
 	
-		if (strlen ($str) <= $n)
+		if (strlen($str) <= $n)
 			return $str;		
 		else 
 			return substr ($str, 0, $n).'...';
@@ -140,8 +144,7 @@ class website {
 			buildError("Couldnt fetch any voting links from the database. ".mysql_error());
 		else
 		{ 
-			while($row = mysql_fetch_assoc($result)) 
-			{
+			while($row = mysql_fetch_assoc($result)) {
 			?>
             <div class='votelink'>
             <table width="100%">
@@ -149,16 +152,15 @@ class website {
                     <td width="20%"><img src="<?php echo $row['image']; ?>" /></td>
                     <td width="50%"><strong><?php echo $row['title']; ?></strong> (<?php echo $row['points']; ?> Vote Points)<td>
                     <td width="40%">
-					<?php if(website::checkIfVoted($row['id'])==FALSE) {
-							?> <input type='submit' value='Vote' 
-                            onclick="vote('<?php echo $row['id']; ?>',this)">
+					<?php if(website::checkIfVoted($row['id'])==FALSE) {?> 
+                    		<input type='submit' value='Vote'  onclick="vote('<?php echo $row['id']; ?>',this)">
 					<?php
 						 }
 						 else 
 						 {
 							 $getNext = mysql_query("SELECT next_vote FROM ".$GLOBALS['connection']['webdb'].".votelog 
-							 WHERE userid='".account::getAccountID($_SESSION['cw_user'])."' 
-							 AND siteid='".$row['id']."' ORDER BY id DESC LIMIT 1");
+													 WHERE userid='".account::getAccountID($_SESSION['cw_user'])."' 
+													 AND siteid='".$row['id']."' ORDER BY id DESC LIMIT 1");
 							 
 							 $row = mysql_fetch_assoc($getNext);
 							 $time = $row['next_vote'] - time();
@@ -178,13 +180,12 @@ class website {
 	public static function checkIfVoted($siteid) 
 	{
 		$siteid = (int)$siteid;
-	    $db = $GLOBALS['connection']['webdb'];
 		$acct_id = account::getAccountID($_SESSION['cw_user']);
 		
 		connect::selectDB('webdb');
 		
 		$result = mysql_query("SELECT COUNT(id) FROM votelog 
-		WHERE userid='".$acct_id."' AND siteid='".$siteid."' AND next_vote > ".time()."");
+		WHERE userid='".$acct_id."' AND siteid='".$siteid."' AND next_vote > ".time());
 
 		if (mysql_result($result,0)==0) 
 			return FALSE;

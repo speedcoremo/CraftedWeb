@@ -20,10 +20,7 @@ class plugins
 					{
 						connect::selectDB('webdb');
 						if(file_exists('plugins/'.$folderName.'/config.php'))
-						{
-							
 							include('plugins/'.$folderName.'/config.php');
-						}
 						
 						$loaded_plugins[] = $folderName;
 						$count++;
@@ -31,13 +28,9 @@ class plugins
 				}
 				
 				if($count==0)
-				{
 					$_SESSION['loaded_plugins'] = NULL;
-				}
 				else
-				{
 					$_SESSION['loaded_plugins'] = $loaded_plugins;
-				}
 			}
 		}
 	}
@@ -59,12 +52,10 @@ class plugins
 						
 						foreach($folder as $fileName)
 						{
-							
 							if(!in_array($fileName,$bad))
-							{
 								$loaded[] = 'plugins/' . $folderName . '/'. $type . '/'.$fileName;
-							}
 						}
+						
 						$_SESSION['loaded_plugins_' . $type] = $loaded;
 					}
 				}
@@ -90,16 +81,13 @@ class plugins
 					}
 				}
 				if($count == 0)
-				{
-					include('pages/404.php');
-				}		  
+					include('pages/404.php');	  
 			}
 			###########################
 			elseif($type == 'javascript')
 			{
 				foreach($_SESSION['loaded_plugins_' . $type] as $filename)
 				{
-					
 					echo '<script type="text/javascript" src="'.$filename.'"></script>';
 				}
 			}
