@@ -26,7 +26,7 @@
  
 	//The value is the Security Code generated from the IPN section of your AlertPay account. Please change it to yours.
 	define("IPN_SECURITY_CODE", "NY86MQyPXGcUXJ2v");
-	define("MY_MERCHANT_EMAIL", "a.hedling@hotmail.com");
+	define("MY_MERCHANT_EMAIL", "youremail@gmail.com");
 
 	//Setting information about the transaction
 	$receivedSecurityCode = $_POST['ap_securitycode'];

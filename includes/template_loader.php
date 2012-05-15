@@ -1,5 +1,5 @@
 <?php 
- require("includes/classes/template_parse.php"); 
+ require('includes/classes/template_parse.php'); 
 
  $getTemplate = mysql_query("SELECT path FROM template WHERE applied='1' ORDER BY id ASC LIMIT 1");
  $row = mysql_fetch_assoc($getTemplate);

@@ -7,9 +7,8 @@
  if (!isset($page))  
 	 include('pages/home.php');
  elseif(isset($_SESSION['loaded_plugins_pages']) && $GLOBALS['enablePlugins']==true && !in_array($page.'.php',$pages))
- {
 	plugins::load('pages'); 
- }
+	
  elseif(in_array($page.'.php',$pages)) 
  {
 	 $result = mysql_query("SELECT COUNT(filename) FROM disabled_pages WHERE filename='".$page."'");
@@ -23,12 +22,12 @@
 	 $result = mysql_query("SELECT * FROM custom_pages WHERE filename='".$page."'");
 	 if(mysql_num_rows($result)>0) 
 	 {	  
-	 $check = mysql_query("SELECT COUNT(filename) FROM disabled_pages WHERE filename='".$page."'");
-	 if(mysql_result($check,0)==0) 
-	 {
-		$row = mysql_fetch_assoc($result);
-		echo html_entity_decode($row['content']); 
-	 } 
+		 $check = mysql_query("SELECT COUNT(filename) FROM disabled_pages WHERE filename='".$page."'");
+		 if(mysql_result($check,0)==0) 
+		 {
+			$row = mysql_fetch_assoc($result);
+			echo html_entity_decode($row['content']); 
+		 } 
 	} 
 	else 
 	  include('pages/404.php');

@@ -1,4 +1,4 @@
-1// CraftedWeb Javascript file.
+// CraftedWeb Javascript file.
 
 var mouseY = 0;
 var arrow = 0;
@@ -10,13 +10,14 @@ $(document).ready(function()
 
 $(".login_input").focus(function() 
 {
-	
-	if(this.value=="Username...") {
+	if(this.value=="Username...") 
+	{
 		this.value="";
-	} else if(this.value="Password...") {
+	} 
+	else if(this.value="Password...") 
+	{
 		this.value="";
 	}
-	
 });
 
 
@@ -24,7 +25,8 @@ function vote(siteid,button)
 {
   $(button).attr("disabled", "true");
   $.post("includes/scripts/vote.php", { siteid: siteid },
-	  function(data) {
+	  function(data) 
+	  {
 		  window.location=data;
 	  });
 }  
@@ -33,8 +35,8 @@ function changeAmount(input,type)
 {
 	if(type=='open') 
 	{
-	var amount = document.getElementById("amount");
-	amount.value=input.value;
+		var amount = document.getElementById("amount");
+		amount.value=input.value;
 	}
 	else
 	{
@@ -49,9 +51,12 @@ function changeAmount(input,type)
 $(".content_hider").click(function() 
 {
 	$(this).toggleClass("content_hider_highlight");
-	if($(this).next().is(":hidden")) {
+	if($(this).next().is(":hidden")) 
+		{
 			 $(this).next().slideDown("fast");
-		} else {
+		} 
+		else 
+		{
           $(this).next().slideUp("fast");
 		}
 });
@@ -77,7 +82,6 @@ function enableForumAcc()
 	$("#forumAcc").fadeIn();
 }
 
-
 function redirect(url) 
 {
 	$("#overlay").fadeIn("fast");
@@ -86,13 +90,15 @@ function redirect(url)
 
 function confirmItemDelete(url) 
 {
-var btn=confirm("Do you really wish to delete this item?");
-if (btn==true) {
-        redirect(url); 
-  }
-  else {
-	 alert("Chicken!");
-  }
+	var btn=confirm("Do you really wish to delete this item?");
+	if (btn==true) 
+	  {
+		redirect(url); 
+	  }
+	  else 
+	  {
+		 alert("Chicken!");
+	  }
 }
 
 (function($){
@@ -150,15 +156,19 @@ function register(captchastate)
 	
 	 $.post("includes/scripts/register.php", { register: "true", username: username,email: email,password: password,
 	 password_repeat: password_repeat, captcha: captcha, raf: raf },
-               function(data) {
-				   if(data==true) {
+               function(data) 
+			   {
+				   if(data==true) 
+				   {
 					   popUp("Account Created","Your account has been created successfully. You will be redirected to the account page in 5 seconds...");
 					   $("#username").val("");
 					   $("#email").val("");
 					   $("#password").val("");
 					   $("#password_repeat").val("");
 					   setTimeout ( "redirect('?p=account')", 5000 );
-				   } else {
+				   } 
+				   else 
+				   {
 				       popUp("Account Creation", data);
 					   $('#register').removeAttr('disabled');
 				   }
@@ -173,7 +183,8 @@ function checkUsername()
    $("#username_check").html("Checking for availability...");
    
     $.post("includes/scripts/register.php", { check: "username", value: username },
-               function(data) {
+               function(data) 
+			   {
 				    $("#username_check").html(data);
 			   });
 }
@@ -296,9 +307,12 @@ function checkout()
 	popUp("Proccessing...","Proccessing your payment & sending the items...");
 	$.post("includes/scripts/shop.php", { action: "checkout", values:values},
 		   function(data) {
-			   if(data==true) {
+			   if(data==true) 
+			   {
 				 window.location='?p=cart&return=true'  
-			   } else {
+			   } 
+			   else 
+			   {
 				 window.location='?p=cart&return=' + data;  
 			   }
 	  });
@@ -328,7 +342,8 @@ function selectChar(values,box)
      $(".charBox").fadeOut('fast');
 	 $(box).fadeIn('fast');
 	 $("#choosechar").html("Selected Character:");
-	 if (selected_char!=0) {
+	 if (selected_char!=0) 
+	 {
 		  box_char = document.getElementById(selected_char);
 		  $(box_char).removeClass("charBox").addClass("charBoxHighlight");
 	 }
@@ -339,7 +354,8 @@ function selectChar(values,box)
 	   
 	   
 	  $.post("includes/scripts/character.php", { action: "getLocations", values: values},
-	   function(data) {
+	   function(data) 
+	   {
 			 $("#teleport_to").html(data);  
 	   }); 
 }
@@ -410,7 +426,7 @@ function editShopItemNow(entry,shop)
 	
 	$.post("includes/scripts/shop.php", { action: "editItem", entry: entry, shop:shop, price: price},
 		function(data) {
-		popUp("Edit item","Saved! Refresh the page to see the result.");
-		$("#popup").css("top",mouseY - 150);
+			popUp("Edit item","Saved! Refresh the page to see the result.");
+			$("#popup").css("top",mouseY - 150);
 	});
 }

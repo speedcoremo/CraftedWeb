@@ -116,7 +116,6 @@ else if ($resp == 'INVALID')
 		 '".$first_name."','".$last_name."','".$mc_gross."','".$payment_date."','".$fecha."')");
 	}
 	
-	
  mail($GLOBALS['donation']['copyTo'],"INVALID Donation","A payment was invalid. Information is shown below: <br/>
 		  User ID : ".$custom."
 		  Buyer Email: ".$payer_email."
@@ -135,7 +134,6 @@ else if ($resp == 'INVALID')
     }
  }
 
- 
- fclose ($fp); 
+fclose ($fp); 
  
 ?> 

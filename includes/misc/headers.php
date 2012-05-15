@@ -10,7 +10,6 @@ if(!isset($_SESSION))
 ############
 ob_start();
 
-
 ############
 # Enable all errors. None will be shown due to our custom errors.
 ############

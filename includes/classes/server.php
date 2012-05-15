@@ -93,27 +93,9 @@ class server {
 			$time = time();
 			$uptime = $time - $row['starttime'];
 			
-			if($uptime<60) 
-				$string = 'Seconds';
-			elseif ($uptime > 60) 
-			{
-				$uptime = $uptime / 60;
-				$string = 'Minutes'; 
-			if ($uptime > 60) 
-			{									 
-				$string = 'Hours';
-				$uptime = $uptime / 60;
-			if ($uptime > 24) 
-			{
-				$string = 'Days';
-				$uptime = $uptime / 24;
-			}
-			}
-				$uptime = ceil($uptime);
-			}
 			 echo '
 			       <td>
-			       	   <b>'.$uptime.' '.$string.'</b> uptime
+			       	   <b>'.convTime($uptime).' '.$string.'</b> uptime
 				   </td>
 			       </tr>';
 			}
