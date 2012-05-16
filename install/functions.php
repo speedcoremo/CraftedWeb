@@ -78,7 +78,7 @@ function step2()
 function step3() 
 {
 	echo '[Info]Connecting to database...';
-	 mysql_connect($_SESSION['install']['database']['host'],$_SESSION['install']['database']['user'],$_SESSION['install']['database']['pass'])or die
+	mysql_connect($_SESSION['install']['database']['host'],$_SESSION['install']['database']['user'],$_SESSION['install']['database']['pass'])or die
 	('<br/>[FAILURE]Could not connect to the database. Please restart the installation. ');
 	
 	echo '<br/>[Success]Connected to database.';

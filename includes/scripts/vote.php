@@ -24,8 +24,8 @@ if (isset($_POST['siteid']))
 		
 		connect::selectDB('webdb');
 		
-		mysql_query("INSERT INTO votelog VALUES('','".$siteid."',
-		'".$acct_id."','".time()."','".$next_vote."','".$_SERVER['REMOTE_ADDR']."')");
+		mysql_query("INSERT INTO votelog (siteid,userid,timestamp,next_vote,ip)
+		VALUES('".$siteid."','".$acct_id."','".time()."','".$next_vote."','".$_SERVER['REMOTE_ADDR']."')");
 		 
 		$getSiteData = mysql_query("SELECT points,url FROM votingsites WHERE id='".$siteid."'");
 		$row = mysql_fetch_assoc($getSiteData);
