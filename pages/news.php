@@ -63,7 +63,7 @@ if (isset($_GET['newsid']))
 			connect::selectDB('webdb'); 
 			mysql_query("INSERT INTO news_comments (newsid,text,poster,ip) VALUES ('".$id."','".$text."','".$acct."','".$_SERVER['REMOTE_ADDR']."')");
 			
-			header("Location: ?p=news&id=".$id);
+			header("Location: ?p=news&newsid=".$id);
 		}
 	}
 	
