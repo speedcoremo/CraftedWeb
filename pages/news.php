@@ -7,54 +7,63 @@ if (isset($_GET['newsid']))
 	$result = mysql_query("SELECT * FROM news WHERE id='".$id."'");
 	$row = mysql_fetch_assoc($result); ?>
     <div class='box_two_title'><?php echo $row['title']; ?></div>
+    
     <?php 
-	$text = preg_replace("
-	  #((http|https|ftp)://(\S*?\.\S*?))(\s|\;|\)|\]|\[|\{|\}|,|\"|'|:|\<|$|\.\s)#ie",
-	  "'<a href=\"$1\" target=\"_blank\">http://$3</a>$4'",
-	  $row['body']
-	);
-	echo nl2br($text); ?> 
+	$text = preg_replace("#((http|https|ftp)://(\S*?\.\S*?))(\s|\;|\)|\]|\[|\{|\}|,|\"|'|:|\<|$|\.\s)#ie",
+	  "'<a href=\"$1\" target=\"_blank\">http://$3</a>$4'",$row['body']);
+	echo nl2br($text); 
+	?> 
    
     <br/><br/>
     <span class='yellow_text'>Written by <b><?php echo $row['author'];?></b> | <?php echo $row['date']; ?></span>
-    <?php if ($GLOBALS['news']['enableComments']==true) 
+    <?php 
+	 if ($GLOBALS['news']['enableComments']==true) 
 	 { 
 		 $result = mysql_query("SELECT poster FROM news_comments WHERE newsid='".$id."' ORDER BY id DESC LIMIT 1");
 		 $rows = mysql_fetch_assoc($result);
-	 if($rows['poster'] == $_SESSION['cw_user_id'] && isset($_SESSION['cw_user']) && isset($_SESSION['cw_user_id'])) 
-		echo "<p>You can't post 2 comments in a row!</p>"; 
+		 
+		 if($rows['poster'] == $_SESSION['cw_user_id'] && isset($_SESSION['cw_user']) && isset($_SESSION['cw_user_id'])) 
+			echo '<span class="attention">You can\'t post 2 comments in a row!</span>'; 
 	 else 
 	 {
 	?>
     <hr/>
     <h4 class="yellow_text">Comments</h4>
-    <?php if ($_SESSION['cw_user']) {?>
-    <table width="100%"> <tr> <td>
-    <form action="?p=news&id=<?php echo $id; ?>" method="post">
-    <textarea id="newscomment_textarea" name="text">Comment this post...</textarea> </td>
-    <td><input type="submit" value="Post" name="comment"></td>
-    </form> 
-    </tr></table>
+    <?php if ($_SESSION['cw_user']) { ?>
+    <form action="?p=news&newsid=<?php echo $id; ?>" method="post">
+    <table width="100%"> 
+    	<tr> 
+    		<td>
+   			    <textarea id="newscomment_textarea" name="text">Comment this post...</textarea> 
+            </td>
+   		    <td>
+            	<input type="submit" value="Post" name="comment"> 
+            </td>
+    	</tr>
+    </table>
+    </form>
     <br/>
+    
     <?php
 	} 
 	else
-		echo "<span class='note'>Log in to comment!</span>";
+		echo '<span class="note">Log in to comment!</span>';
 	}
 	if (isset($_POST['comment'])) 
 	{
-		if (isset($_POST['text']) && isset($_SESSION['cw_user']) && strlen($_POST['text'])<1000) 
+		if (isset($_POST['text']) && isset($_SESSION['cw_user']) && strlen($_POST['text'])<=1000) 
 		{
 			$text = mysql_real_escape_string(trim(htmlentities($_POST['text'])));
-			$ip = $_SERVER['REMOTE_ADDR'];
+			
 			connect::selectDB('logondb');
-			
-			$getAcct = mysql_query("SELECT `id` FROM `account` WHERE `username` = '{$_SESSION['cw_user']}'"); $row = mysql_fetch_assoc($getAcct);
+			$getAcct = mysql_query("SELECT id FROM account WHERE username = '".$_SESSION['cw_user']."'"); 
+			$row = mysql_fetch_assoc($getAcct);
 			$acct = $row['id'];
-			connect::selectDB('webdb'); 
-			mysql_query("INSERT INTO news_comments VALUE ('','".$id."','".$text."','".$acct."','".$ip."')");
 			
-			header("Location: ?p=news&id=".$_GET['id']);
+			connect::selectDB('webdb'); 
+			mysql_query("INSERT INTO news_comments (newsid,text,poster,ip) VALUES ('".$id."','".$text."','".$acct."','".$_SERVER['REMOTE_ADDR']."')");
+			
+			header("Location: ?p=news&id=".$id);
 		}
 	}
 	
@@ -67,11 +76,9 @@ if (isset($_GET['newsid']))
 		while($row = mysql_fetch_assoc($result))
 		{
 			$c++;
-			$text = preg_replace("
-              #((http|https|ftp)://(\S*?\.\S*?))(\s|\;|\)|\]|\[|\{|\}|,|\"|'|:|\<|$|\.\s)#ie",
-             "'<a href=\"$1\" target=\"_blank\">http://$3</a>$4'",
-             $row['text']
-            );
+			$text = preg_replace("#((http|https|ftp)://(\S*?\.\S*?))(\s|\;|\)|\]|\[|\{|\}|,|\"|'|:|\<|$|\.\s)#ie",
+             "'<a href=\"$1\" target=\"_blank\">http://$3</a>$4'",$row['text']);
+			 
 			connect::selectDB('logondb');
 			$query = mysql_query("SELECT username,id FROM account WHERE id='".$row['poster']."'"); 
 			$pi = mysql_fetch_assoc($query); 
@@ -81,11 +88,12 @@ if (isset($_GET['newsid']))
 			?>
 			<div class="news_comment" id="comment-<?php echo $row['id']; ?>"> 
                 <div class="news_comment_user"><?php echo $user; 
-				if(mysql_result($getGM,0)>0)
-					echo "<br/><span class='blue_text' style='font-size: 11px;'>Staff</span>";?>
+					if(mysql_result($getGM,0)>0)
+						echo "<br/><span class='blue_text' style='font-size: 11px;'>Staff</span>";
+					?>
                 </div> 
-                <div class="news_comment_body"><?php if(mysql_result($getGM,0)>0) { echo "<span class='blue_text'>"; }?>
-				<?php echo nl2br(htmlentities($text));
+                <div class="news_comment_body"><?php if(mysql_result($getGM,0)>0) { echo "<span class='blue_text'>"; } ?>
+					<?php echo nl2br(htmlentities($text));
                 if(mysql_result($getGM,0)>0) { echo "</span>"; }
 				
 				if(isset($_SESSION['cw_gmlevel']) && $_SESSION['cw_gmlevel']>=$GLOBALS['adminPanel_minlvl'] || 
@@ -109,59 +117,59 @@ else
 	 {
 			if(file_exists($row['image']))
 			{
-			echo '
-				   <table class="news" width="100%"> 
-						<tr>
-							<td><h3 class="yellow_text">'.$row['title'].'</h3></td>
-						</tr>
-				   </table>
-				   <table class="news_content" cellpadding="4"> 
-					   <tr>
-						  <td><img src="'.$row['image'].'" alt=""/></td> 
-						  <td>';
+			 ?>
+             	<table class="news" width="100%"> 
+                    <tr>
+                        <td><h3 class="yellow_text"><?php echo $row['title']; ?></h3></td>
+                    </tr>
+				</table>
+				<table class="news_content" cellpadding="4"> 
+                   <tr>
+                      <td><img src="<?php echo $row['image']; ?>" alt=""/></td> 
+                      <td>
+              <?php            
 			}
 			else
 			{
-				echo '
-				   <table class="news" width="100%"> 
-						<tr>
-							<td><h3 class="yellow_text">'.$row['title'].'</h3></td>
-						</tr>
-				   </table>
-				   <table class="news_content" cellpadding="4"> 
-					   <tr>
-						   <td>';
+				?>
+                <table class="news" width="100%"> 
+                    <tr>
+                        <td><h3 class="yellow_text"><?php echo $row['title']; ?></h3></td>
+                    </tr>
+               </table>
+               <table class="news_content" cellpadding="4"> 
+                   <tr>
+                       <td>
+                <?php       
 			}
 			
-			$text = preg_replace("
-			  #((http|https|ftp)://(\S*?\.\S*?))(\s|\;|\)|\]|\[|\{|\}|,|\"|'|:|\<|$|\.\s)#ie",
-			 "'<a href=\"$1\" target=\"_blank\">http://$3</a>$4'",
-			 $row['body']
-			);
+			$text = preg_replace("#((http|https|ftp)://(\S*?\.\S*?))(\s|\;|\)|\]|\[|\{|\}|,|\"|'|:|\<|$|\.\s)#ie",
+			"'<a href=\"$1\" target=\"_blank\">http://$3</a>$4'",$row['body']);
 			
 			if ($GLOBALS['news']['limitHomeCharacters']==true) 
 			{ 		
-					echo website::limit_characters(htmlentities($text,200));
-					$output.= website::limit_characters($row['body'],200);
-				 } 
-				 else 
-				 {
-					 echo nl2br(htmlentities($text)); 
-					 $output .= nl2br($row['body']); 
-				}
-			 $commentsNum = mysql_query("SELECT COUNT(id) FROM news_comments WHERE newsid='".$row['id']."'");
+				echo website::limit_characters(htmlentities($text,200));
+				$output.= website::limit_characters($row['body'],200);
+			} 
+			else 
+			{
+				 echo nl2br(htmlentities($text)); 
+				 $output .= nl2br($row['body']); 
+			}
+			
+			$commentsNum = mysql_query("SELECT COUNT(id) FROM news_comments WHERE newsid='".$row['id']."'");
 							 
-			 if($GLOBALS['news']['enableComments']==TRUE) 
-				 $comments = '| <a href="?p=news&amp;newsid='.$row['id'].'">Comments ('.mysql_result($commentsNum,0).')</a>';
-			 else
-				 $comments = '';
+			if($GLOBALS['news']['enableComments']==TRUE) 
+				$comments = '| <a href="?p=news&amp;newsid='.$row['id'].'">Comments ('.mysql_result($commentsNum,0).')</a>';
+			else
+				$comments = NULL;
 			 
-			 echo '
-			 <br/><br/><br/>
-			 <i class="gray_text"> Written by '.$row['author'].' | '.$row['date'].' '.$comments.'</i>
-			 </td> 
-			 </tr>
-			 </table>';
+			echo '
+			<br/><br/><br/>
+			<i class="gray_text"> Written by '.$row['author'].' | '.$row['date'].' '.$comments.'</i>
+			</td> 
+			</tr>
+			</table>';
 					
 	 }
 }
