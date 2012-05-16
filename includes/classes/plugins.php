@@ -45,8 +45,9 @@ class plugins
 				$loaded = array();
 				foreach($_SESSION['loaded_plugins'] as $folderName)
 				{	
+					connect::selectDB('webdb');
 					$chk = mysql_query("SELECT COUNT(*) FROM disabled_plugins WHERE foldername='".mysql_real_escape_string($folderName)."'");
-					if(mysql_result($chk,0)==0)
+					if(mysql_result($chk,0)==0 && file_exists('plugins/' . $folderName . '/'. $type . '/'))
 					{	
 						$folder = scandir('plugins/' . $folderName . '/'. $type . '/');
 						

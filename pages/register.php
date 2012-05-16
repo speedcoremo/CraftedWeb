@@ -2,7 +2,7 @@
 It's free, join us today! <hr/>
 <?php 
 account::isLoggedIn();
-if ($_POST['register']) {
+if (isset($_POST['register'])) {
 	account::register($_POST['username'],$_POST['email'],$_POST['password'],$_POST['password_repeat'],$_POST['referer'],$_POST['captcha']);
 } 
 ?>
@@ -10,12 +10,12 @@ if ($_POST['register']) {
 <table width="80%">
         <tr>
              <td align="right">Username:</td> 
-             <td><input type="text" id="username" value="<?php echo $_POST['username']; ?>" onkeyup="checkUsername()"/>
+             <td><input type="text" id="username" value="<?php if (isset($_POST['username'])) echo $_POST['username']; ?>" onkeyup="checkUsername()"/>
              <br/><span id="username_check" style="display:none;"></span></td>
         </tr>
         <tr>
              <td align="right">Email:</td> 
-             <td><input type="text"  id="email" value="<?php echo $_POST['email']; ?>"/></td>
+             <td><input type="text"  id="email" value="<?php if (isset($_POST['email'])) echo $_POST['email']; ?>"/></td>
         </tr>
          <tr>
              <td align="right">Password:</td> 
