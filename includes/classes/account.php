@@ -571,7 +571,7 @@ class account {
 				$code = RandomString();
 				website::sendEmail($account_email,$GLOBALS['default_email'],'Forgot Password',"
 				Hello there. <br/><br/>
-				A password reset has been requested for the account ",$account_name," <br/>
+				A password reset has been requested for the account ".$account_name." <br/>
 				If you wish to reset your password, click the following link: <br/>
 				<a href='".$GLOBALS['website_domain']."?p=forgotpw&code=".$code."&account=".account::getAccountID($account_name)."'>
 				".$GLOBALS['website_domain']."?p=forgotpw&code=".$code."&account=".account::getAccountID($account_name)."</a>
