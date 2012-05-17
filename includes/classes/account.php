@@ -561,7 +561,7 @@ class account {
 		{
 			connect::selectDB('logondb');
 			$result = mysql_query("SELECT COUNT('id') FROM account 
-								 WHERE username='".$account_name."' AND email='".$account_email."'");
+								   WHERE username='".$account_name."' AND email='".$account_email."'");
 			
 			if (mysql_result($result,0)==0) 
 				echo '<b class="red_text">The username or email is incorrect.</b>';
@@ -579,16 +579,15 @@ class account {
 				<br/><br/>
 				
 				If you did not request this, just ignore this message.<br/><br/>
-				Sincerely, The Management.
-				");
+				Sincerely, The Management.");
 				$account_id = self::getAccountID($account_name);
 				connect::selectDB('webdb');
 				
 				mysql_query("DELETE FROM password_reset WHERE account_id='".$account_id."'");
-				mysql_query("INSERT INTO password_reset VALUES ('','".$code."','".$account_id."')");
-				echo "
-				An email containing a link to reset your password has been sent to the Email address you specified. 
-				If you've tried to send other password reset before this, they won't work. <br/>";
+				mysql_query("INSERT INTO password_reset (code,account_id)
+				VALUES ('".$code."','".$account_id."')");
+				echo "An email containing a link to reset your password has been sent to the Email address you specified. 
+					  If you've tried to send other forgot password requests before this, they won't work. <br/>";
 				}	
 			}	
 		}
