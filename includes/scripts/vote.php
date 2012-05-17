@@ -20,6 +20,9 @@ if (isset($_POST['siteid']))
 	{
 		$acct_id = account::getAccountID($_SESSION['cw_user']);
 		
+		if(empty($acct_id))
+			exit();
+		
 		$next_vote = time() + $GLOBALS['vote']['timer'];
 		
 		connect::selectDB('webdb');

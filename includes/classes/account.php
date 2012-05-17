@@ -87,6 +87,7 @@ class account {
 			exit();
 		}
 		header('Location: '.$last_page);
+		exit();
 	}
 	
 	
